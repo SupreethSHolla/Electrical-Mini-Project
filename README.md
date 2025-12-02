@@ -22,7 +22,10 @@ IR Sensor GND  → GND
 IR Sensor OUT  → D2  
 
 <b>AI Generated Example Image:<b>
-<img width="473" height="316" alt="image" src="https://github.com/user-attachments/assets/27826ba9-b1de-41ed-90a9-0b6676d0b097" /># Electrical-Mini-Project-
+
+<img width="473" height="316" alt="image" src="https://github.com/user-attachments/assets/27826ba9-b1de-41ed-90a9-0b6676d0b097" />
+
+# Electrical-Mini-Project-
 
 Laptop Connection
 •	Connect Arduino to your laptop using USB cable
