@@ -1,3 +1,10 @@
+Python Program to Read and Display Sensor Data
+Install pyserial:
+Open terminal / CMD:
+pip install pyserial
+
+If needed live graph:
+pip install matplotlib
 
 Determination of motion of object (In this case Animals near the highways) by using simple circuit using Audino and IR sensors
 
@@ -31,11 +38,3 @@ Laptop Connection
 •	Connect Arduino to your laptop using USB cable
 •	No extra drivers needed for Arduino Uno
 •	If using a clone board, install CH340 driver
-
-Python Program to Read and Display Sensor Data
-Install pyserial:
-Open terminal / CMD:
-pip install pyserial
-
-If needed live graph:
-pip install matplotlib
