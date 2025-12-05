@@ -1,10 +1,11 @@
 Python Program to Read and Display Sensor Data
+
 Install pyserial:
-Open terminal / CMD:
-pip install pyserial
+Open terminal / CMD
+1. pip install pyserial
 
 If needed live graph:
-pip install matplotlib
+2. pip install matplotlib
 
 Determination of motion of object (In this case Animals near the highways) by using simple circuit using Audino and IR sensors
 
