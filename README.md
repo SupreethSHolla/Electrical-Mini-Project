@@ -7,6 +7,8 @@ Open terminal / CMD
 If needed live graph:
 2. pip install matplotlib
 
+3. pip install playsound
+
 Determination of motion of object (In this case Animals near the highways) by using simple circuit using Audino and IR sensors
 
 Parts Required
