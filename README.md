@@ -41,3 +41,5 @@ Laptop Connection
 •	Connect Arduino to your laptop using USB cable
 •	No extra drivers needed for Arduino Uno
 •	If using a clone board, install CH340 driver
+
+NOTE:MAX DISTANCE FROM IR TO RECOGNIZE OBJECT IS 3CM 
