@@ -47,8 +47,11 @@ NOTE:MAX DISTANCE FROM IR TO RECOGNIZE OBJECT IS 3CM
 
 OUTPUT FOR GUI PROGRAM:
 NOTE: THE OUTPUT IS FOR WHEN BOTH SENSORS DETECT OBJECT  
+
 <img width="501" height="328" alt="image" src="https://github.com/user-attachments/assets/4ad9857d-c999-46e0-aefb-6710ae26c306" />
 
 OUTPUT FOR GRAPH PROGRAM:
+
+
 <img width="645" height="557" alt="image" src="https://github.com/user-attachments/assets/ae3527f1-9b09-4dbb-87fe-3d269ed457d4" />
 
