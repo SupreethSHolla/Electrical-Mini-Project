@@ -1,0 +1,214 @@
+# ---------- IMPORT REQUIRED MODULES ----------
+
+import serial                    # Used to communicate with Arduino via COM port
+import time                      # Used for delays and time calculations
+import tkinter as tk             # Used to create GUI window
+import winsound                  # Used to play beep sound on Windows
+
+import matplotlib.pyplot as plt  # Used for plotting graph
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+# Used to embed Matplotlib graph inside Tkinter
+
+
+# ---------- SERIAL COMMUNICATION SETUP ----------
+
+PORT = "COM6"                    # COM port where Arduino is connected
+arduino = serial.Serial(
+    PORT,                        # Port name
+    9600,                        # Baud rate (must match Arduino)
+    timeout=1                    # Read timeout in seconds
+)
+time.sleep(2)                    # Wait for Arduino to reset
+
+
+# ---------- DATA STORAGE FOR GRAPH ----------
+
+detection_times = []             # Stores time (in seconds) of each detection
+detection_counts = []            # Stores detection number (1,2,3...)
+start_time = time.time()         # Reference start time
+last_detected = False            # Flag to avoid repeated counting
+
+
+# ---------- TKINTER WINDOW SETUP ----------
+
+root = tk.Tk()                   # Create main GUI window
+root.title("IR Sensor Detection System")   # Window title
+root.attributes("-fullscreen", True)       # Enable fullscreen mode
+root.config(bg="#0f1115")        # Set dark background color
+
+# Exit fullscreen safely using ESC key
+root.bind("<Escape>", lambda e: root.destroy())
+
+
+# ---------- GUI STYLING ----------
+
+TITLE_FONT = ("Segoe UI", 26, "bold")   # Font for title
+STATUS_FONT = ("Segoe UI", 28, "bold")  # Font for main status
+LABEL_FONT = ("Segoe UI", 18, "bold")   # Font for sensor labels
+
+BG = "#0f1115"                  # Background color
+PANEL = "#1a1d23"               # Graph panel color
+TEXT = "#e6e6e6"                # Normal text color
+OK = "#00ff99"                  # Green (clear)
+WARN = "#ff3b3b"                # Red (detected)
+INFO = "#4da6ff"                # Blue (info)
+
+
+# ---------- GUI LABELS ----------
+
+# Title label
+tk.Label(
+    root,
+    text="IR Sensor Status",
+    font=TITLE_FONT,
+    fg=TEXT,
+    bg=BG
+).pack(pady=20)
+
+# Main detection status label
+status_label = tk.Label(
+    root,
+    text="Reading...",
+    font=STATUS_FONT,
+    fg=INFO,
+    bg=BG
+)
+status_label.pack(pady=10)
+
+# Sensor 1 status label
+sensor1_label = tk.Label(
+    root,
+    text="Sensor 1: ---",
+    font=LABEL_FONT,
+    fg=INFO,
+    bg=BG
+)
+sensor1_label.pack(pady=5)
+
+# Sensor 2 status label
+sensor2_label = tk.Label(
+    root,
+    text="Sensor 2: ---",
+    font=LABEL_FONT,
+    fg=INFO,
+    bg=BG
+)
+sensor2_label.pack(pady=5)
+
+
+# ---------- SOUND FUNCTION ----------
+
+def play_beep():
+    """Plays a short beep sound when detection occurs"""
+    winsound.Beep(1000, 200)     # Frequency 1000Hz, duration 200ms
+
+
+# ---------- MATPLOTLIB GRAPH SETUP ----------
+
+plt.style.use("dark_background")    # Use dark theme for graph
+
+fig, ax = plt.subplots(figsize=(8, 5))  # Create figure and axes
+fig.patch.set_facecolor(BG)             # Set figure background color
+ax.set_facecolor(PANEL)                 # Set plot area background
+
+scatter = ax.scatter([], [], s=80)      # Scatter plot for detections
+line_plot, = ax.plot([], [], linewidth=2, alpha=0.8)
+# Line plot for continuous trend
+
+ax.set_xlabel("Detection Number", color=TEXT)  # X-axis label
+ax.set_ylabel("Time (sec)", color=TEXT)        # Y-axis label
+ax.tick_params(colors=TEXT)                    # Tick color
+ax.set_title("IR Sensor Live Detection", color=TEXT)
+
+# Embed Matplotlib graph into Tkinter window
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.get_tk_widget().pack(pady=20)
+
+
+# ---------- SERIAL READING FUNCTION ----------
+
+def read_serial():
+    """Reads data from Arduino, updates GUI and graph"""
+    global last_detected
+
+    try:
+        # Read one line from Arduino
+        line = arduino.readline().decode(errors="ignore").strip()
+
+        # Check if data contains both sensor values
+        if line and "A:" in line and "B:" in line:
+            parts = line.split()             # Split string into parts
+            A = int(parts[0].split(":")[1])  # Extract Sensor A value
+            B = int(parts[1].split(":")[1])  # Extract Sensor B value
+
+            # ---------- UPDATE SENSOR LABELS ----------
+
+            sensor1_label.config(
+                text="Sensor 1: DETECTED" if A else "Sensor 1: CLEAR",
+                fg=WARN if A else OK
+            )
+
+            sensor2_label.config(
+                text="Sensor 2: DETECTED" if B else "Sensor 2: CLEAR",
+                fg=WARN if B else OK
+            )
+
+            # ---------- UPDATE MAIN STATUS ----------
+
+            if A or B:
+                status_label.config(text="ANIMAL DETECTED", fg=WARN)
+                play_beep()
+            else:
+                status_label.config(text="NO OBJECT", fg=OK)
+
+            # ---------- GRAPH UPDATE (ONLY ON NEW DETECTION) ----------
+
+            if (A or B) and not last_detected:
+                last_detected = True           # Prevent multiple counts
+
+                t = time.time() - start_time  # Time since program start
+                detection_times.append(t)     # Store detection time
+                detection_counts.append(len(detection_times))
+                # Store detection count
+
+                # Update scatter plot
+                points = list(zip(detection_counts, detection_times))
+                scatter.set_offsets(points)
+
+                # Apply color gradient
+                colors = plt.cm.plasma(
+                    [i / len(points) for i in range(len(points))]
+                )
+                scatter.set_color(colors)
+
+                # Update continuous line plot
+                line_plot.set_data(detection_counts, detection_times)
+
+                # Adjust axes limits dynamically
+                ax.set_xlim(0, max(5, len(points) + 1))
+                ax.set_ylim(0, max(detection_times) + 2)
+
+                # Update graph title with total count
+                ax.set_title(
+                    f"IR Sensor Live Detection • Total: {len(points)}",
+                    color=TEXT
+                )
+
+                canvas.draw()  # Redraw graph
+
+            # Reset detection flag when sensors are clear
+            if A == 0 and B == 0:
+                last_detected = False
+
+    except Exception as e:
+        print("Error:", e)
+        status_label.config(text="ERROR READING", fg=TEXT)
+
+    # Call this function again after 50ms
+    root.after(50, read_serial)
+
+
+# ---------- START PROGRAM ----------
+
+read_serial()      # Start reading serial data
+root.mainloop()    # Start Tkinter event loop
