@@ -1,3 +1,5 @@
+# Electrical-Mini-Project-
+
 Python Program to Read and Display Sensor Data
 
 Install pyserial:
@@ -35,7 +37,6 @@ IR Sensor OUT  → D2
 
 <img width="473" height="316" alt="image" src="https://github.com/user-attachments/assets/27826ba9-b1de-41ed-90a9-0b6676d0b097" />
 
-# Electrical-Mini-Project-
 
 Laptop Connection
 •	Connect Arduino to your laptop using USB cable
@@ -56,4 +57,10 @@ NOTE: THE OUTPUT IS FOR WHEN BOTH SENSORS DOES DETECT OBJECT
 
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/c6bd53a0-de56-4649-b83a-402ca2adf9da" />
+
+
+
+FLOWCHART 
+
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/353db9c9-c6cd-44aa-8a62-084d9275b568" />
 
