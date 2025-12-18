@@ -45,13 +45,15 @@ Laptop Connection
 NOTE:MAX DISTANCE FROM IR TO RECOGNIZE OBJECT IS 3CM 
 
 
-OUTPUT FOR GUI PROGRAM:
-NOTE: THE OUTPUT IS FOR WHEN BOTH SENSORS DETECT OBJECT  
+OUTPUT FOR PROGRAM:
+NOTE: THE OUTPUT IS FOR WHEN BOTH SENSORS DOES NOT DETECT OBJECT  
 
-<img width="501" height="328" alt="image" src="https://github.com/user-attachments/assets/4ad9857d-c999-46e0-aefb-6710ae26c306" />
-
-OUTPUT FOR GRAPH PROGRAM:
+<img width="1917" height="1079" alt="image" src="https://github.com/user-attachments/assets/dbf76aa0-73aa-442a-9044-06b2eaa9f564" />
 
 
-<img width="645" height="557" alt="image" src="https://github.com/user-attachments/assets/ae3527f1-9b09-4dbb-87fe-3d269ed457d4" />
+NOTE: THE OUTPUT IS FOR WHEN BOTH SENSORS DOES DETECT OBJECT  
+
+
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/c6bd53a0-de56-4649-b83a-402ca2adf9da" />
 
